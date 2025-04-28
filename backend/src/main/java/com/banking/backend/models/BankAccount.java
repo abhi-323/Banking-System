@@ -11,11 +11,11 @@ import java.util.UUID;
 public class BankAccount {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private UUID id;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
     @Column(name = "account_number", nullable = false, unique = true)
@@ -28,8 +28,12 @@ public class BankAccount {
     @Column(name = "balance", nullable = false)
     private BigDecimal balance;
 
-    @Column(name = "approved", nullable = false)
-    private boolean approved; // true if Manager has approved
+    @Column(name = "approval", nullable = false)
+    private boolean approval;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_id", nullable = false)
+    private Branch branch;  // Referencing Branch entity
 
     public enum AccountType {
         SAVINGS,

@@ -15,8 +15,8 @@ public class LoanAccount {
     @GeneratedValue
     private UUID id;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
     @Column(nullable = false)

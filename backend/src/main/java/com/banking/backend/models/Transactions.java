@@ -12,15 +12,15 @@ import java.util.UUID;
 public class Transactions {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private UUID id;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "from_account_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "from_account_id")
     private BankAccount fromAccount;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "to_account_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "to_account_id")
     private BankAccount toAccount;
 
     @Enumerated(EnumType.STRING)

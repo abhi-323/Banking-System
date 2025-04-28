@@ -1,8 +1,6 @@
 package com.banking.backend.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import java.util.UUID;
 
@@ -13,7 +11,7 @@ import java.util.UUID;
 public class Users {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private UUID id;
 
     @Column(nullable = false)
