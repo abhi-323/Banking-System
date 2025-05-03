@@ -12,15 +12,12 @@ public class UserService {
     UserRepository userRepository;
     @Autowired
     BankAccountRepo bankAccountRepo;
+
     public void register(Users user) {
 //        Users existingUser = userRepository.findByUsername(user.getUsername());
 //        if(existingUser == null) {
 //            user.setPassword(user.getPassword());
             userRepository.save(user);
 //        }
-    }
-
-    public void applyBankAccount(Users user) {
-//        bankAccountRepo.save();
     }
 }
