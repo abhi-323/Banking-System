@@ -23,19 +23,12 @@ public class Users {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private String role;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
-
-    public enum Role {
-        END_USER,
-        CLERK,
-        MANAGER
-    }
 
     public enum Status {
         ACTIVE,
