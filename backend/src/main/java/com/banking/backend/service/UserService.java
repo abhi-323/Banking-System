@@ -30,10 +30,11 @@ public class UserService {
 
     public void register(Users user) {
         Users existingUser = userRepository.findByEmail(user.getEmail());
-        if(existingUser == null) {
-           user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        if (existingUser == null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
         }
+    }
     
     public Map<String, String> verify(Users user) {
         Map<String, String> res = new HashMap<>();
