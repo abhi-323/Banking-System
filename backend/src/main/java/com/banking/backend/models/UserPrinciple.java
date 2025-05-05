@@ -1,9 +1,11 @@
 package com.banking.backend.models;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class UserPrinciple implements UserDetails {
@@ -15,9 +17,10 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return Collections.singletonList(
+                new SimpleGrantedAuthority("ROLE_" + user.getRole())
+        );
     }
-
     @Override
     public String getPassword() {
         return user.getPassword();
@@ -25,6 +28,6 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getEmail();
     }
 }

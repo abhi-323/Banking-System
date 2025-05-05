@@ -1,0 +1,10 @@
+package com.banking.backend.repository;
+
+import com.banking.backend.models.Branch;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.UUID;
+
+public interface BranchRepo extends JpaRepository<Branch, UUID> {
+
+}

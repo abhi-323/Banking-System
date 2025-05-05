@@ -20,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import java.util.List;
 
 @Configuration
@@ -28,7 +27,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
-   private final UserDetailServiceImp userDetailServiceImp;
+    private final UserDetailServiceImp userDetailServiceImp;
     public SecurityConfig(JwtFilter jwtFilter, UserDetailServiceImp userDetailServiceImp) {
         this.jwtFilter = jwtFilter;
         this.userDetailServiceImp = userDetailServiceImp;
@@ -40,7 +39,10 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("job-tracker/auth/login","job-tracker/auth/signup","job-tracker/job/jobs").permitAll()
+                        .requestMatchers("api/user/login","api/user/signup","/api/accountRequest/apply").permitAll()
+//                        .requestMatchers("api/user/clan").hasRole("USER")
+//                        .requestMatchers("api/user/clerk").hasRole("CLERK")
+//                        .requestMatchers("api/user/mngr").hasRole("MANAGER")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
