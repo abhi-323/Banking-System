@@ -27,5 +27,4 @@ public class UserController {
     public ResponseEntity<?> loginUser(@RequestBody Users user) throws Exception {
         return ResponseEntity.ok(userService.verify(user));
     }
-
 }

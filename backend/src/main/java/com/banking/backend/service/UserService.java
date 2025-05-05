@@ -34,7 +34,7 @@ public class UserService {
            user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         }
-    }
+    
     public Map<String, String> verify(Users user) {
         Map<String, String> res = new HashMap<>();
         Users existingUser = userRepository.findByEmail(user.getEmail());
@@ -53,6 +53,4 @@ public class UserService {
         res.put("token", "none");
         return res;
     }
-
-
 }
