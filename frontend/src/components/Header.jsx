@@ -16,7 +16,7 @@ const Header = () => {
           className="flex items-center space-x-2 text-blue-700 hover:text-blue-800 transition-colors duration-300"
         >
           <FaUniversity className="text-2xl" />
-          <span className="font-bold text-xl tracking-wide">TrustBank</span>
+          <span className="font-bold text-xl tracking-wide">Finovate Bank</span>
         </Link>
 
         <button
@@ -86,7 +86,7 @@ const NavLinks = ({ mobile = false, isAuthenticated, logout }) => {
         Transactions
       </Link>
       <Link to="/support" className={linkClass}>
-        Support
+        Loans
       </Link>
 
       {isAuthenticated ? (
