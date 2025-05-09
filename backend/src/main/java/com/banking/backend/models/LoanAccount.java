@@ -23,10 +23,9 @@ public class LoanAccount {
     private BigDecimal sanctionedAmount;
 
     @Column(nullable = false)
-    private BigDecimal interestRate; // example: 8.5 for 8.5%
-
+    private BigDecimal interestRate;
     @Column(nullable = false)
-    private BigDecimal emiAmount; // Monthly EMI amount
+    private BigDecimal emiAmount;
 
     @Column(nullable = false)
     private LocalDate startDate;
@@ -35,12 +34,13 @@ public class LoanAccount {
     private LocalDate endDate;
 
     @Column(nullable = false)
-    private BigDecimal outstandingAmount; // Remaining balance to be paid
+    private BigDecimal outstandingAmount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LoanStatus status;
-
+    @Column(nullable = false)
+    private String PAN;
     public enum LoanStatus {
         ACTIVE,
         CLOSED,

@@ -1,16 +1,5 @@
 import React from "react";
-const account = {
-  user: {
-    fullName: "Aman Kumar Singh",
-    email: "aman.kumar@example.com",
-  },
-  accountNumber: "987654321098",
-  accountType: "SAVINGS",
-  status: "ACTIVE",
-  branch: "New Delhi - Connaught Place",
-  ifscCode: "ICIC0000456",
-  balance: 152340.89,
-};
+
 const AccountDetails = ({ account }) => {
   if (!account) return <p>Loading account information...</p>;
 

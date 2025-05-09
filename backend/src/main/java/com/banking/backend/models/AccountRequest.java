@@ -19,10 +19,14 @@ public class AccountRequest {
     private BankAccount.AccountType requestedType;
 
     private String branch;
+
     private String ifscCode;
 
+    @Column(nullable = false)
+    private String PAN;
+
     @Enumerated(EnumType.STRING)
-    private Status status; // PENDING, APPROVED, REJECTED
+    private Status status;
 
     public enum Status{
         PENDING,

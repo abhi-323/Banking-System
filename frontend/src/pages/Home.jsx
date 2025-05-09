@@ -1,24 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import HeroSection from "../components/HeroSection";
-import AccountRequest from "../pages/AccountRequest";
 import AccountDetails from "../components/AccountDetails";
-const account = {
-  user: {
-    fullName: "Aman Kumar Singh",
-    email: "aman.kumar@example.com",
-  },
-  accountNumber: "987654321098",
-  accountType: "SAVINGS",
-  status: "ACTIVE",
-  branch: "New Delhi - Connaught Place",
-  ifscCode: "ICIC0000456",
-  balance: 152340.89,
-};
+import List from "../components/List";
+
 const Home = () => {
+  const [tableItems, setTableItems] = useState([]);
+
+  useEffect(() => {
+    const fetchAccountRequests = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/accountRequest/getAll"
+        );
+        const formattedData = response.data.map((item) => ({
+          avatar: "https://api.uifaces.co/our-content/donated/xZ4wg2Xj.jpg", // default avatar
+          name: item.user.name,
+          email: item.user.email,
+          accountType: item.requestedType,
+          branch: item.branch,
+          ifscCode: item.ifscCode,
+          status: item.status,
+          pan: item.pan,
+        }));
+        setTableItems(formattedData);
+      } catch (error) {
+        console.error("Failed to fetch account requests:", error);
+      }
+    };
+
+    fetchAccountRequests();
+  }, []);
+
   return (
     <>
       <HeroSection />
-      <AccountDetails account={account} />
+      <List tableItems={tableItems} />
     </>
   );
 };

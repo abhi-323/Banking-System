@@ -9,10 +9,8 @@ const Footer = () => {
           href="#"
           className="flex justify-center items-center text-2xl font-semibold text-indigo-700 dark:text-white mb-4"
         >
-          <FaUniversity className="text-2xl mr-2 text-indigo-700 dark:text-white" />
-          <span className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
-            Finovate Bank
-          </span>
+          <FaUniversity className="text-2xl mr-2 text-white" />
+          <span>Finovate Bank</span>
         </a>
 
         <p className="mb-6 text-gray-600 dark:text-gray-400">
