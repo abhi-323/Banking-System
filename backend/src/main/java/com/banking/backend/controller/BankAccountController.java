@@ -6,17 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/api/bankAccount")
 public class BankAccountController {
+
     @Autowired
     private BankAccountService bankAccountService;
 
     @PostMapping("/create-approve")
-    public ResponseEntity<?> createBankAccount(@RequestBody BankAccount bankAccount) {
+    public ResponseEntity<?> createBankAccount(@RequestBody UUID id) {
         try {
-            BankAccount createdAccount = bankAccountService.createBankAccount(bankAccount);
+            BankAccount createdAccount = bankAccountService.approveCreateBankAccount(id);
             return ResponseEntity.ok(createdAccount);
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
@@ -32,5 +35,4 @@ public class BankAccountController {
             return ResponseEntity.status(404).body("Bank account not found: " + ex.getMessage());
         }
     }
-
 }

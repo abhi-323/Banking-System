@@ -31,11 +31,17 @@ public class BankAccount {
     @Column(name = "approval", nullable = false)
     private boolean approval;
 
+    @Column(nullable = false)
+    private String ifscCode;
+
     @ManyToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(name = "branch_id", nullable = false)
-    private Branch branch;  // Referencing Branch entity
+    private Branch branch;
+
     @Column(nullable = false)
     private String PAN;
+
     public enum AccountType {
         SAVINGS,
         CURRENT,

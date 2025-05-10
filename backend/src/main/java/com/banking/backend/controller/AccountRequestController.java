@@ -26,4 +26,5 @@ public class AccountRequestController {
         List<AccountRequest> requests = accountRequestService.getAllAccountRequests();
         return ResponseEntity.ok(requests);
     }
+
 }
