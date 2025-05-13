@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import HeroSection from "../components/HeroSection";
-import AccountDetails from "../components/AccountDetails";
 import List from "../components/List";
 
 const Home = () => {

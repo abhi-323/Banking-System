@@ -2,8 +2,8 @@ package com.banking.backend.service;
 
 import com.banking.backend.models.AccountRequest;
 import com.banking.backend.models.BankAccount;
+import com.banking.backend.DTO.BankAccountDTO;
 import com.banking.backend.models.Branch;
-import com.banking.backend.models.Users;
 import com.banking.backend.repository.AccountRequestRepo;
 import com.banking.backend.repository.BankAccountRepo;
 import com.banking.backend.repository.BranchRepo;
@@ -30,7 +30,7 @@ public class BankAccountService {
     @Autowired
     AccountRequestRepo accountRequestRepo;
 
-    public BankAccount approveCreateBankAccount(UUID id) {
+    public BankAccountDTO approveCreateBankAccount(UUID id) {
         Optional<AccountRequest> optionalRequest = accountRequestRepo.findById(id);
 
         if (optionalRequest.isEmpty()) {
@@ -49,8 +49,8 @@ public class BankAccountService {
         Branch branch = branchRepository.findByBranchName(request.getBranch())
                 .orElseThrow(() -> new IllegalArgumentException("Branch not found: " + request.getBranch()));
         newAccount.setBranch(branch);
-
-        return bankAccountRepo.save(newAccount);
+        bankAccountRepo.save(newAccount);
+        return convetBankAccountDTO(newAccount);
     }
 
     private String generateAccountNumber() {
@@ -62,4 +62,19 @@ public class BankAccountService {
         return bankAccountRepo.findById(uuid)
                 .orElseThrow(() -> new RuntimeException("No bank account with ID: " + id));
     }
+
+    public BankAccountDTO convetBankAccountDTO(BankAccount account) {
+        return new BankAccountDTO(
+                account.getId(),
+                account.getAccountNumber(),
+                account.getAccountType().name(),
+                account.getBalance(),
+                account.isApproval(),
+                account.getIfscCode(),
+                account.getPAN(),
+                account.getBranch().getBranchName(),
+                account.getUser().getId()
+        );
+    }
+
 }
