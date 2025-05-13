@@ -1,8 +1,10 @@
 package com.banking.backend.service;
 
+import com.banking.backend.models.AccountRequest;
 import com.banking.backend.models.BankAccount;
+import com.banking.backend.DTO.BankAccountDTO;
 import com.banking.backend.models.Branch;
-import com.banking.backend.models.Users;
+import com.banking.backend.repository.AccountRequestRepo;
 import com.banking.backend.repository.BankAccountRepo;
 import com.banking.backend.repository.BranchRepo;
 import com.banking.backend.repository.UserRepository;
@@ -25,36 +27,33 @@ public class BankAccountService {
     @Autowired
     private BranchRepo branchRepository;
 
-    public BankAccount createBankAccount(BankAccount bankAccount) {
-        // Load and validate User
-        UUID userId = bankAccount.getUser().getId();
-        Users user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    @Autowired
+    AccountRequestRepo accountRequestRepo;
 
-        // Load and validate Branch
-        UUID branchId = bankAccount.getBranch().getId();
-        Branch branch = branchRepository.findById(branchId)
-                .orElseThrow(() -> new RuntimeException("Branch not found"));
+    public BankAccountDTO approveCreateBankAccount(UUID id) {
+        Optional<AccountRequest> optionalRequest = accountRequestRepo.findById(id);
 
-        // Set resolved objects
-        bankAccount.setUser(user);
-        bankAccount.setBranch(branch);
+        if (optionalRequest.isEmpty()) {
+            throw new IllegalArgumentException("Account request with ID " + id + " not found.");
+        }
+        AccountRequest request = optionalRequest.get();
+        BankAccount newAccount = new BankAccount();
+        newAccount.setUser(request.getUser());
+        newAccount.setAccountNumber(generateAccountNumber());
+        newAccount.setBalance(BigDecimal.ZERO);
+        newAccount.setAccountType(request.getRequestedType());
+        newAccount.setApproval(true);
+        newAccount.setPAN(request.getPAN());
+        newAccount.setIfscCode(request.getIfscCode());
 
-        // Set defaults
-        if (bankAccount.getBalance() == null)
-            bankAccount.setBalance(BigDecimal.ZERO);
-
-        if (bankAccount.getAccountNumber() == null || bankAccount.getAccountNumber().isEmpty())
-            bankAccount.setAccountNumber(generateAccountNumber());
-
-        // Force approval to false initially
-        bankAccount.setApproval(false);
-
-        return bankAccountRepo.save(bankAccount);
+        Branch branch = branchRepository.findByBranchName(request.getBranch())
+                .orElseThrow(() -> new IllegalArgumentException("Branch not found: " + request.getBranch()));
+        newAccount.setBranch(branch);
+        bankAccountRepo.save(newAccount);
+        return convetBankAccountDTO(newAccount);
     }
 
     private String generateAccountNumber() {
-        // Simple unique format: 12-digit random number
         return String.valueOf(100000000000L + (long) (Math.random() * 899999999999L));
     }
 
@@ -62,6 +61,20 @@ public class BankAccountService {
         UUID uuid = UUID.fromString(id);
         return bankAccountRepo.findById(uuid)
                 .orElseThrow(() -> new RuntimeException("No bank account with ID: " + id));
+    }
+
+    public BankAccountDTO convetBankAccountDTO(BankAccount account) {
+        return new BankAccountDTO(
+                account.getId(),
+                account.getAccountNumber(),
+                account.getAccountType().name(),
+                account.getBalance(),
+                account.isApproval(),
+                account.getIfscCode(),
+                account.getPAN(),
+                account.getBranch().getBranchName(),
+                account.getUser().getId()
+        );
     }
 
 }

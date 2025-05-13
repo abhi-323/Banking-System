@@ -20,33 +20,12 @@ const Footer = () => {
         <ul className="flex flex-wrap justify-center items-center gap-6 mb-6 text-gray-700 dark:text-gray-300 text-sm font-medium">
           <li>
             <a
-              href="https://en.wikipedia.org/wiki/Expense_management"
-              target="_blank"
-              className="hover:text-indigo-600 transition-colors duration-300"
-            >
-              About
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="https://github.com/singhkumaraman/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-indigo-600 transition-colors duration-300"
-            >
-              GitHub
-            </a>
-          </li>
-          <li>
-            <a
               href="/contact"
               className="hover:text-indigo-600 transition-colors duration-300"
             >
               Contact
             </a>
           </li>
-          {/* Additional Link Examples */}
           <li>
             <a
               href="/privacy-policy"
@@ -68,7 +47,7 @@ const Footer = () => {
         <p className="text-sm text-gray-500 dark:text-gray-400 pb-4">
           © {new Date().getFullYear()}{" "}
           <a href="#" className="hover:underline">
-            CashUe™
+            Finovate Bank™
           </a>
           . All Rights Reserved.
         </p>

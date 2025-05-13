@@ -79,7 +79,7 @@ const NavLinks = ({ mobile = false, isAuthenticated, logout }) => {
       <Link to="/" className={linkClass}>
         Dashboard
       </Link>
-      <Link to="/accounts" className={linkClass}>
+      <Link to="/account-details" className={linkClass}>
         Accounts
       </Link>
       <Link to="/transactions" className={linkClass}>

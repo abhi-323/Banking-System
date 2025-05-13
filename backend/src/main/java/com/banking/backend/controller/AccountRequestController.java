@@ -20,10 +20,10 @@ public class AccountRequestController {
         return accountRequestService.applyAccountRequest(accountRequest);
     }
 
-    // ✅ New method to get all account requests
     @GetMapping("/getAll")
     public ResponseEntity<List<AccountRequest>> getAllAccountRequests() {
         List<AccountRequest> requests = accountRequestService.getAllAccountRequests();
         return ResponseEntity.ok(requests);
     }
+
 }
