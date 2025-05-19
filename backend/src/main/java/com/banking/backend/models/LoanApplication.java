@@ -34,8 +34,10 @@ public class LoanApplication {
 
     @Column
     private LocalDate applicationDate;
+
     @Column(nullable = false)
-    private String PAN;
+    private String pan;
+
     public enum ApplicationStatus {
         PENDING,
         APPROVED,
