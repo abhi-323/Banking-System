@@ -16,8 +16,12 @@ public class LoanApplicationController {
 
     @PostMapping("/apply")
     public ResponseEntity<?> applyLoan(@RequestBody LoanApplication loanApplication) {
-        loanApplicationService.saveLoanApplication(loanApplication);
-        return ResponseEntity.ok().build();
+        try {
+            loanApplicationService.saveLoanApplication(loanApplication);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Error applying for loan: " + e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")

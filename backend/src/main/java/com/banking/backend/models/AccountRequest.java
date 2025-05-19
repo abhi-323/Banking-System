@@ -23,7 +23,7 @@ public class AccountRequest {
     private String ifscCode;
 
     @Column(nullable = false)
-    private String PAN;
+    private String pan;
 
     @Enumerated(EnumType.STRING)
     private Status status;

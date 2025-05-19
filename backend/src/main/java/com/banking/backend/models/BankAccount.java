@@ -39,7 +39,7 @@ public class BankAccount {
     private Branch branch;
 
     @Column(nullable = false)
-    private String PAN;
+    private String pan;
 
     public enum AccountType {
         SAVINGS,

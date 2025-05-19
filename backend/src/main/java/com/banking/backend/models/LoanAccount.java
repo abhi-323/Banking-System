@@ -40,7 +40,7 @@ public class LoanAccount {
     @Column(nullable = false)
     private LoanStatus status;
     @Column(nullable = false)
-    private String PAN;
+    private String pan;
     public enum LoanStatus {
         ACTIVE,
         CLOSED,
