@@ -43,7 +43,7 @@ public class BankAccountService {
         newAccount.setBalance(BigDecimal.ZERO);
         newAccount.setAccountType(request.getRequestedType());
         newAccount.setApproval(true);
-        newAccount.setPAN(request.getPAN());
+        newAccount.setPan(request.getPan());
         newAccount.setIfscCode(request.getIfscCode());
 
         Branch branch = branchRepository.findByBranchName(request.getBranch())
@@ -71,7 +71,7 @@ public class BankAccountService {
                 account.getBalance(),
                 account.isApproval(),
                 account.getIfscCode(),
-                account.getPAN(),
+                account.getPan(),
                 account.getBranch().getBranchName(),
                 account.getUser().getId()
         );
