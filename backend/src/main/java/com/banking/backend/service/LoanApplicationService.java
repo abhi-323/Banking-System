@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLOutput;
 import java.util.UUID;
 
 @Service
@@ -31,6 +32,7 @@ public class LoanApplicationService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Users user=userRepository.findByEmail(username);
+        System.out.println("------------> Loan Applicaiton -----------> " + loanApplication);
         if (loanApplication.getUser().getId() == user.getId()) {
             return loanApplication;
         } else {
