@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Passbook from "./pages/Passbook";
-// import AccountDetails from "./components/AccountDetails";
+import AccountDetails from "./components/AccountDetails";
 import TransactionForm from "./pages/TransactionForm";
 
 const App = () => {
@@ -20,7 +20,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/transactions" element={<Passbook />} />
-          {/* <Route path="/account-details" element={<AccountDetails />} /> */}
+          <Route path="/account-details" element={<AccountDetails />} />
           <Route path="/money-transfer" element={<TransactionForm />} />
         </Routes>
         <Footer />
