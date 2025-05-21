@@ -19,13 +19,16 @@ public class Transactions {
     @JoinColumn(name = "from_account_id")
     private BankAccount fromAccount;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "to_account_id")
     private BankAccount toAccount;
 
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TransactionType type;
+
 
     @Column(nullable = false)
     private BigDecimal amount;
@@ -34,8 +37,10 @@ public class Transactions {
     @Column(nullable = false)
     private TransactionStatus status;
 
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
 
     public enum TransactionType {
         TRANSFER,
@@ -43,9 +48,11 @@ public class Transactions {
         DEPOSIT
     }
 
+
     public enum TransactionStatus {
         PENDING,
         COMPLETED,
         FAILED
     }
+
 }
