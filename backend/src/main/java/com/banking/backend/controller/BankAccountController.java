@@ -27,7 +27,7 @@ public class BankAccountController {
     @GetMapping("/getAccountDetail")
     public ResponseEntity<?> getBankAccountById() {
         try {
-            BankAccount account = bankAccountService.getBankAccountDetail();
+            BankAccountDTO account = bankAccountService.getBankAccountDetail();
             return ResponseEntity.ok(account);
         } catch (RuntimeException ex) {
             return ResponseEntity.status(404).body("Bank account not found: " + ex.getMessage());
