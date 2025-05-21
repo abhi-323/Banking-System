@@ -3,14 +3,23 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { SiCashapp } from "react-icons/si";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { setToken } from "../redux/reducers/userAuthReducer"; // Adjust the path as needed
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { setAccountDetails } from "../redux/reducers/accountDetailsReducer";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
+
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -18,11 +27,51 @@ const Login = () => {
   } = useForm({
     resolver: zodResolver(loginSchema),
   });
-  const loginSuccess = () => toast.success("Login Successful");
-  const loginFailed = (msg) => toast.error(`Login failed: ${msg}`);
-  const onSubmit = async (data) => {
-    loginSuccess();
+
+  const loginSuccess = (token) => {
+    toast.success("Login Successful");
+
+    axios.get("http://localhost:8080/api/bankAccount/getAccountDetail", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json", // optional for GET but fine to include
+      },
+    })
+    .then((response) => {
+      dispatch(setAccountDetails(response.data))
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+
+
+    setTimeout(() => {
+      navigate("/account-details");
+    },2500);
   };
+  const loginFailed = (msg) => toast.error(`Login failed: ${msg}`);
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post("http://localhost:8080/api/user/login", {
+        email: data.email,
+        password: data.password,
+      });
+
+      const { token } = response.data;
+      dispatch(setToken(token)); // Save token in Redux
+      loginSuccess(token);
+
+    } catch (error) {
+      if (error.response) {
+        loginFailed(error.response.data.message || "Invalid credentials");
+      } else {
+        loginFailed("Network or server error");
+      }
+      console.error("Login error:", error);
+    }
+  };
+
   return (
     <>
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -77,7 +126,7 @@ const Login = () => {
           </p>
         </div>
       </div>
-      <ToastContainer position="top-right" autoClose={2000} />
+      <ToastContainer position="top-center" autoClose={2000} />
     </>
   );
 };
