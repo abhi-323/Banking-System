@@ -34,8 +34,9 @@ public class LoanApplication {
 
     @Column
     private LocalDate applicationDate;
+
     @Column(nullable = false)
-    private String PAN;
+    private String pan;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id", nullable = false)

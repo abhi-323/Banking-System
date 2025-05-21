@@ -1,7 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-const AccountDetails = ({ account }) => {
-  if (!account) return <p>Loading account information...</p>;
+const AccountDetails = () => {
+  const account = useSelector((state) => state.accountDetails.account)
+
+  if (!account.id) return <p>Loading account information...</p>;
 
   return (
     <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
@@ -11,8 +14,8 @@ const AccountDetails = ({ account }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-800">
         <div>
           <h3 className="font-semibold text-lg mb-2">Account Holder</h3>
-          <p>{account.user.fullName}</p>
-          <p className="text-sm text-gray-600">{account.user.email}</p>
+          <p>{account.userName}</p>
+          <p className="text-sm text-gray-600">{account.userEmail}</p>
         </div>
 
         <div>
@@ -24,7 +27,7 @@ const AccountDetails = ({ account }) => {
             <strong>Account Type:</strong> {account.accountType}
           </p>
           <p>
-            <strong>Status:</strong> {account.status}
+            <strong>Status:</strong> {account.userStatus}
           </p>
         </div>
 

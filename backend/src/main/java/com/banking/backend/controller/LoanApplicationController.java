@@ -1,5 +1,6 @@
 package com.banking.backend.controller;
 
+import com.banking.backend.DTO.IdRequest;
 import com.banking.backend.models.LoanApplication;
 import com.banking.backend.service.LoanApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,10 @@ public class LoanApplicationController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getLoanApplication(@PathVariable UUID id) {
+    @PostMapping("/getById")
+    public ResponseEntity<?> getLoanApplication(@RequestBody IdRequest id) {
         try {
-            LoanApplication loanApplication = loanApplicationService.getLoanApplicationById(id);
+            LoanApplication loanApplication = loanApplicationService.getLoanApplicationById(id.getId());
             return ResponseEntity.ok(loanApplication);
         } catch (RuntimeException ex) {
             return ResponseEntity.status(404).body("Loan application not found: " + ex.getMessage());
