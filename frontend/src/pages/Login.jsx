@@ -39,7 +39,6 @@ const Login = () => {
     })
     .then((response) => {
       dispatch(setAccountDetails(response.data))
-      console.log("Response:", response.data);
     })
     .catch((error) => {
       console.error("Error:", error);

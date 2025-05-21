@@ -3,9 +3,8 @@ import { useSelector } from "react-redux";
 
 const AccountDetails = () => {
   const account = useSelector((state) => state.accountDetails.account)
-  console.log("account", account);
-  if (!account.id) return <p>Loading account information...</p>;
 
+  if (!account.id) return <p>Loading account information...</p>;
 
   return (
     <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
