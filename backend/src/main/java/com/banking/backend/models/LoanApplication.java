@@ -23,10 +23,10 @@ public class LoanApplication {
     private BigDecimal requestedAmount;
 
     @Column(nullable = false)
-    private BigDecimal interestRate; // Proposed interest rate
+    private BigDecimal interestRate;
 
     @Column(nullable = false)
-    private int tenureInMonths; // How many months to repay
+    private int tenureInMonths;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -36,6 +36,11 @@ public class LoanApplication {
     private LocalDate applicationDate;
     @Column(nullable = false)
     private String PAN;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_id", nullable = false)
+    private Branch branch;
+
     public enum ApplicationStatus {
         PENDING,
         APPROVED,

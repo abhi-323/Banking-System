@@ -19,11 +19,9 @@ public class AccountRequestController {
     public AccountRequest applyAccount(@RequestBody AccountRequest accountRequest) {
         return accountRequestService.applyAccountRequest(accountRequest);
     }
-
     @GetMapping("/getAll")
     public ResponseEntity<List<AccountRequest>> getAllAccountRequests() {
         List<AccountRequest> requests = accountRequestService.getAllAccountRequests();
         return ResponseEntity.ok(requests);
     }
-
 }
