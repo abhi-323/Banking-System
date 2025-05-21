@@ -10,6 +10,7 @@ import { setToken } from "../redux/reducers/userAuthReducer"; // Adjust the path
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { setAccountDetails } from "../redux/reducers/accountDetailsReducer";
+import { setLoanApplication } from "../redux/reducers/loanApplicaitonReducer";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -31,6 +32,7 @@ const Login = () => {
   const loginSuccess = (token) => {
     toast.success("Login Successful");
 
+    // Get Account Details
     axios.get("http://localhost:8080/api/bankAccount/getAccountDetail", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -39,6 +41,21 @@ const Login = () => {
     })
     .then((response) => {
       dispatch(setAccountDetails(response.data))
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+
+    // Get Loan Application List
+    axios.get("http://localhost:8080/api/loanApplication/getByUser", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json", // optional for GET but fine to include
+      },
+    })
+    .then((response) => {
+      dispatch(setLoanApplication(response.data))
+      console.log(response.data)
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -130,4 +147,5 @@ const Login = () => {
     </>
   );
 };
+
 export default Login;

@@ -9,6 +9,8 @@ import "slick-carousel/slick/slick-theme.css";
 import Passbook from "./pages/Passbook";
 import AccountDetails from "./components/AccountDetails";
 import TransactionForm from "./pages/TransactionForm";
+import LoanApplicaitonList from "./pages/LoanApplicatonList";
+import LoanApplicationForm from "./pages/LoanApplicaitonForm";
 
 const App = () => {
   return (
@@ -22,6 +24,8 @@ const App = () => {
           <Route path="/transactions" element={<Passbook />} />
           <Route path="/account-details" element={<AccountDetails />} />
           <Route path="/money-transfer" element={<TransactionForm />} />
+          <Route path="/loan-applications" element={<LoanApplicaitonList />} />
+          <Route path="/apply-loan" element={<LoanApplicationForm />} />
         </Routes>
         <Footer />
       </BrowserRouter>

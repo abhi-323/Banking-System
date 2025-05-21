@@ -85,8 +85,11 @@ const NavLinks = ({ mobile = false, isAuthenticated, logout }) => {
       <Link to="/transactions" className={linkClass}>
         Transactions
       </Link>
-      <Link to="/support" className={linkClass}>
+      <Link to="/apply-loan" className={linkClass}>
         Loans
+      </Link>
+      <Link to="/loan-applications" className={linkClass}>
+        Loan Applications
       </Link>
 
       {isAuthenticated ? (
