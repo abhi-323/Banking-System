@@ -11,5 +11,5 @@ const initialApplicationState = {
     }
   };
 
-  export default initialApplicationState;
+export default initialApplicationState;
   
