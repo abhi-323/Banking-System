@@ -24,10 +24,10 @@ public class BankAccountController {
         return ResponseEntity.ok(createdAccount);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getBankAccountById(@PathVariable("id") String id) {
+    @GetMapping("/getAccountDetail")
+    public ResponseEntity<?> getBankAccountById() {
         try {
-            BankAccount account = bankAccountService.getBankAccountById(id);
+            BankAccount account = bankAccountService.getBankAccountDetail();
             return ResponseEntity.ok(account);
         } catch (RuntimeException ex) {
             return ResponseEntity.status(404).body("Bank account not found: " + ex.getMessage());
