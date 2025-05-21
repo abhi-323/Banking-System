@@ -6,10 +6,10 @@ const accountRequestDataReducer = createSlice({
   initialState: initialAccountDetailsState,
   reducers: {
     setAccountDetails: (state, action) => {
-      state.application = action.payload;
+      state.account = action.payload;
     },
     clearAccountDetails: (state) => {
-      state.application = null;
+      state.account = null;
     },
   },
 });
