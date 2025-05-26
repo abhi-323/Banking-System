@@ -5,12 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ToastContainer, toast } from "react-toastify";
 import { SiCashapp } from "react-icons/si";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
-import { setToken } from "../redux/reducers/userAuthReducer"; // Adjust the path as needed
+import { useDispatch, useSelector } from "react-redux";
+import { setToken } from "../redux/reducers/userAuthReducer";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { setAccountDetails } from "../redux/reducers/accountDetailsReducer";
-import { setLoanApplication } from "../redux/reducers/loanApplicaitonReducer";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -33,52 +32,39 @@ const Login = () => {
     toast.success("Login Successful");
 
     // Get Account Details
-    axios.get("http://localhost:8080/api/bankAccount/getAccountDetail", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json", // optional for GET but fine to include
-      },
-    })
-    .then((response) => {
-      dispatch(setAccountDetails(response.data))
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-
-    // Get Loan Application List
-    axios.get("http://localhost:8080/api/loanApplication/getByUser", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json", // optional for GET but fine to include
-      },
-    })
-    .then((response) => {
-      dispatch(setLoanApplication(response.data))
-      console.log(response.data)
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-
+    axios
+      .get("http://localhost:8080/api/bankAccount/getAccountDetail", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        dispatch(setAccountDetails(response.data));
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
 
     setTimeout(() => {
       navigate("/account-details");
-    },2500);
+    }, 2500);
   };
   const loginFailed = (msg) => toast.error(`Login failed: ${msg}`);
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("http://localhost:8080/api/user/login", {
-        email: data.email,
-        password: data.password,
-      });
+      const response = await axios.post(
+        "http://localhost:8080/api/user/login",
+        {
+          email: data.email,
+          password: data.password,
+        }
+      );
 
       const { token } = response.data;
       dispatch(setToken(token)); // Save token in Redux
       loginSuccess(token);
-
     } catch (error) {
       if (error.response) {
         loginFailed(error.response.data.message || "Invalid credentials");

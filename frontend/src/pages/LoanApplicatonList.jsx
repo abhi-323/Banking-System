@@ -1,8 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { setLoanApplication } from "../redux/reducers/loanApplicaitonReducer";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 
 const LoanApplicaitonList = () => {
   const loanApplications = useSelector((state) => state.loanApplication.application)
+  const dispatch = useDispatch();
+
+  const token = useSelector((state) => state.userAuth.token);
+
+  useEffect(() => {
+  // Get Loan Application List
+    axios.get("http://localhost:8080/api/loanApplication/getByUser", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => {
+      dispatch(setLoanApplication(response.data))
+      console.log(response.data)
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  }, [dispatch, token]);
   
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-8 bg-gray-50">
