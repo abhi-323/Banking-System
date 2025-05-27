@@ -1,19 +1,32 @@
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { setToken } from "./redux/reducers/userAuthReducer";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import Passbook from "./pages/Passbook";
 import AccountDetails from "./components/AccountDetails";
 import TransactionForm from "./pages/TransactionForm";
 import LoanApplicaitonList from "./pages/LoanApplicatonList";
 import LoanApplicationForm from "./pages/LoanApplicaitonForm";
 import List from "./components/List";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(setToken(token));
+    }
+  }, [dispatch]);
+  
   return (
     <>
       <BrowserRouter>
