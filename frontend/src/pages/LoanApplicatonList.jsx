@@ -36,7 +36,7 @@ const LoanApplicaitonList = () => {
             Loan Applications
           </h3>
           <p className="text-gray-600 mt-1">
-            Showing your all loan applicaitons
+            Showing your all loan applications
           </p>
         </div>
         {/* <button className="mt-4 md:mt-0 inline-block px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-500">
