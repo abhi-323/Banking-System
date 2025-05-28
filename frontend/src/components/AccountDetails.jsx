@@ -1,8 +1,28 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setAccountDetails } from "../redux/reducers/accountDetailsReducer";
+import axios from "axios";
 
 const AccountDetails = () => {
-  const account = useSelector((state) => state.accountDetails.account)
+  const account = useSelector((state) => state.accountDetails.account);
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/bankAccount/getAccountDetail", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        dispatch(setAccountDetails(response.data));
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, [dispatch, token]);
 
   if (!account.id) return <p>Loading account information...</p>;
 

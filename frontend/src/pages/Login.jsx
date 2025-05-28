@@ -5,11 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ToastContainer, toast } from "react-toastify";
 import { SiCashapp } from "react-icons/si";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setToken } from "../redux/reducers/userAuthReducer";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { setAccountDetails } from "../redux/reducers/accountDetailsReducer";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -30,21 +29,7 @@ const Login = () => {
 
   const loginSuccess = (token) => {
     toast.success("Login Successful");
-
-    // Get Account Details
-    axios
-      .get("http://localhost:8080/api/bankAccount/getAccountDetail", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        dispatch(setAccountDetails(response.data));
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    localStorage.setItem("token", token);
 
     setTimeout(() => {
       navigate("/account-details");
