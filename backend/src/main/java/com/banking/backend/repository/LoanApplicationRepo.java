@@ -1,6 +1,5 @@
 package com.banking.backend.repository;
 
-import com.banking.backend.models.LoanAccount;
 import com.banking.backend.models.LoanApplication;
 import com.banking.backend.models.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
