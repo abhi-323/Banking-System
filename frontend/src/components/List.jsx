@@ -1,7 +1,30 @@
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setAccountRequestData } from "../redux/reducers/accountRequestDataReducer";
+import axios from "axios";
 
 const List = ({ tableItems }) => {
+  const token = useSelector((state) => state.userAuth.token);
+  const accountRequestData = useSelector((state) => state.accountRequest.application);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+   useEffect(() => {
+      axios.get("http://localhost:8080/api/accountRequest/getAll", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        dispatch(setAccountRequestData(response.data))
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    }, [dispatch, token]);
 
   const handleRowClick = (id) => {
     navigate(`/user/${id}`);
@@ -59,44 +82,44 @@ const List = ({ tableItems }) => {
             </tr>
           </thead>
           <tbody className="text-gray-600 divide-y">
-            {tableItems.map((item, idx) => (
+            {accountRequestData.map((application) => (
               <tr
-                key={idx}
+                key={application.id}
                 className="cursor-pointer hover:bg-gray-100"
-                onClick={() => handleRowClick(item.id)}
+                onClick={() => handleRowClick(application.id)}
               >
                 <td className="flex items-center gap-x-3 py-3 px-6 whitespace-nowrap">
                   <img
-                    src={item.avatar}
+                    src={application.avatar}
                     className="w-10 h-10 rounded-full"
                     alt="avatar"
                   />
                   <div>
                     <span className="block text-gray-700 text-sm font-medium">
-                      {item.name}
+                      {application.name}
                     </span>
                     <span className="block text-gray-700 text-xs">
-                      {item.email}
+                      {application.email}
                     </span>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {item.accountType}
+                  {application.requestedType}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">{item.branch}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{item.ifscCode}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{item.pan}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{application.branch}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{application.ifscCode}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{application.pan}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      item.status === "PENDING"
+                      application.status === "PENDING"
                         ? "bg-yellow-100 text-yellow-800"
-                        : item.status === "APPROVED"
+                        : application.status === "APPROVED"
                         ? "bg-green-100 text-green-800"
                         : "bg-red-100 text-red-800"
                     }`}
                   >
-                    {item.status}
+                    {application.status}
                   </span>
                 </td>
                 <td
@@ -105,7 +128,7 @@ const List = ({ tableItems }) => {
                 >
                   <button
                     className="py-2 px-3 font-medium text-green-600 hover:text-green-500 duration-150 hover:bg-gray-50 rounded-lg"
-                    onClick={() => handleApproval(item.id)}
+                    onClick={() => handleApproval(application.id)}
                   >
                     Approve
                   </button>

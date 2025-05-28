@@ -1,3 +1,5 @@
+import React, {useState} from "react";
+
 const RoleBasedRoute = ({ children }) => {
   const [wait, setwait] = useState(true);
   const token = "";
@@ -5,10 +7,11 @@ const RoleBasedRoute = ({ children }) => {
     setwait(false);
   }, !token);
   if (wait) {
-    return;
-    <>
-      <h2>loading...</h2>
-    </>;
+    return(
+      <>
+        <h2>loading...</h2>
+      </>
+    );
   }
   return children;
 };

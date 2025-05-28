@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUniversity } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isAuthenticated = "";
+  const userToken = useSelector((state) => state.userAuth.token);
+  let isAuthenticated = userToken ? true : false;
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const logout = () => {};
@@ -85,8 +87,14 @@ const NavLinks = ({ mobile = false, isAuthenticated, logout }) => {
       <Link to="/transactions" className={linkClass}>
         Transactions
       </Link>
-      <Link to="/support" className={linkClass}>
+      <Link to="/apply-loan" className={linkClass}>
         Loans
+      </Link>
+      <Link to="/loan-applications" className={linkClass}>
+        Loan Applications
+      </Link>
+      <Link to="/loan-application-list" className={linkClass}>
+        Loan Applications List
       </Link>
 
       {isAuthenticated ? (
