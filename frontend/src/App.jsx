@@ -40,7 +40,7 @@ const App = () => {
           <Route path="/money-transfer" element={<TransactionForm />} />
           <Route path="/loan-applications" element={<LoanApplicaitonList />} />
           <Route path="/apply-loan" element={<LoanApplicationForm />} />
-          <Route path="loan-application-list" element={<List />} />
+          <Route path="/loan-application-list" element={<List />} />
         </Routes>
         <Footer />
       </BrowserRouter>
