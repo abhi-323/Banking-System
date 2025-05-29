@@ -15,7 +15,9 @@ import LoanApplicationForm from "./pages/LoanApplicaitonForm";
 import List from "./components/List";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import AuthRoute from "./components/AuthRoute";
+import ManagerRoute from "./components/ManagerRoute";
+import ClerkRoute from "./components/ClerkRoute";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -26,7 +28,7 @@ const App = () => {
       dispatch(setToken(token));
     }
   }, [dispatch]);
-  
+
   return (
     <>
       <BrowserRouter>
@@ -35,12 +37,42 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
-          <Route path="/transactions" element={<Passbook />} />
-          <Route path="/account-details" element={<AccountDetails />} />
-          <Route path="/money-transfer" element={<TransactionForm />} />
+          <Route
+            path="/transactions"
+            element={
+              <AuthRoute>
+                <Passbook />
+              </AuthRoute>
+            }
+          />
+          <Route
+            path="/account-details"
+            element={
+              <AuthRoute>
+                <AccountDetails />
+              </AuthRoute>
+            }
+          />
+          <Route
+            path="/money-transfer"
+            element={
+              <AuthRoute>
+                <TransactionForm />
+              </AuthRoute>
+            }
+          />
           <Route path="/loan-applications" element={<LoanApplicaitonList />} />
           <Route path="/apply-loan" element={<LoanApplicationForm />} />
-          <Route path="/loan-application-list" element={<List />} />
+          <Route
+            path="/loan-application-list"
+            element={
+              <AuthRoute>
+                <ManagerRoute>
+                  <List />
+                </ManagerRoute>
+              </AuthRoute>
+            }
+          />
         </Routes>
         <Footer />
       </BrowserRouter>

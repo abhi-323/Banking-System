@@ -3,7 +3,7 @@ import { FaUniversity } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="fixed bottom-0 left-0 sticky w-full bg-white/60 backdrop-blur-md border-t border-white/20 shadow-inner dark:bg-gray-900 z-50">
+    <footer className="bottom-0 left-0  w-full bg-white/60 backdrop-blur-md border-t border-white/20 shadow-inner dark:bg-gray-900 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-center">
         <a
           href="#"
