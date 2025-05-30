@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { setAccountRequestData } from "../redux/reducers/accountRequestDataReducer";
 import axios from "axios";
 
-const List = ({ tableItems }) => {
+const AccountRequestList = () => {
   const token = useSelector((state) => state.userAuth.token);
   const accountRequestData = useSelector((state) => state.accountRequest.application);
   const dispatch = useDispatch();
@@ -85,13 +85,13 @@ const List = ({ tableItems }) => {
         <table className="w-full table-auto text-sm text-left">
           <thead className="bg-gray-50 text-gray-600 font-medium border-b">
             <tr>
-              <th className="py-3 px-6">User</th>
-              <th className="py-3 px-6">Account Type</th>
-              <th className="py-3 px-6">Branch</th>
-              <th className="py-3 px-6">IFSC Code</th>
-              <th className="py-3 px-6">PAN</th>
-              <th className="py-3 px-6">Status</th>
-              <th className="py-3 px-6">ACTION</th>
+              <th className="py-3 px-6 text-center">User</th>
+              <th className="py-3 px-6 text-center">Account Type</th>
+              <th className="py-3 px-6 text-center">Branch</th>
+              <th className="py-3 px-6 text-center">IFSC Code</th>
+              <th className="py-3 px-6 text-center">PAN</th>
+              <th className="py-3 px-6 text-center">Status</th>
+              <th className="py-3 px-6 text-center">ACTION</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 divide-y">
@@ -101,12 +101,7 @@ const List = ({ tableItems }) => {
                 className="cursor-pointer hover:bg-gray-100"
                 onClick={() => handleRowClick(application.id)}
               >
-                <td className="flex items-center gap-x-3 py-3 px-6 whitespace-nowrap">
-                  <img
-                    src={application.avatar}
-                    className="w-10 h-10 rounded-full"
-                    alt="avatar"
-                  />
+                <td className=" gap-x-3 py-3 px-6 whitespace-nowrap text-center">
                   <div>
                     <span className="block text-gray-700 text-sm font-medium">
                       {application.user.name}
@@ -116,13 +111,13 @@ const List = ({ tableItems }) => {
                     </span>
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap text-center">
                   {application.requestedType}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">{application.branch}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{application.ifscCode}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{application.pan}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap text-center">{application.branch}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-center">{application.ifscCode}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-center">{application.pan}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-center">
                   <span
                     className={`px-2 py-1 text-xs font-medium rounded-full ${
                       application.status === "PENDING"
@@ -136,7 +131,7 @@ const List = ({ tableItems }) => {
                   </span>
                 </td>
                 <td
-                  className="text-right px-6 whitespace-nowrap"
+                  className="text-center px-6 whitespace-nowrap"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
@@ -158,4 +153,4 @@ const List = ({ tableItems }) => {
   );
 };
 
-export default List;
+export default AccountRequestList;

@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { setToken } from "../redux/reducers/userAuthReducer";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -28,11 +29,15 @@ const Login = () => {
   });
 
   const loginSuccess = (token) => {
+    const tokenDecoded = token ? jwtDecode(token) : null;
+    const role = tokenDecoded ? tokenDecoded.roles[0] : null;
+
     toast.success("Login Successful");
     localStorage.setItem("token", token);
 
     setTimeout(() => {
-      navigate("/account-details");
+      console.log("ROLE 2: ", role);
+      role === "MANAGER" ? navigate("/manager-dashboard") : navigate("/account-details");
     }, 2500);
   };
   const loginFailed = (msg) => toast.error(`Login failed: ${msg}`);

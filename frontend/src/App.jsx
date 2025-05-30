@@ -12,12 +12,15 @@ import AccountDetails from "./components/AccountDetails";
 import TransactionForm from "./pages/TransactionForm";
 import LoanApplicaitonList from "./pages/LoanApplicatonList";
 import LoanApplicationForm from "./pages/LoanApplicaitonForm";
-import List from "./components/List";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AuthRoute from "./components/AuthRoute";
 import ManagerRoute from "./components/ManagerRoute";
 import ClerkRoute from "./components/ClerkRoute";
+import AccountRequest from "./pages/AccountRequest";
+import AccountRequestList from "./pages/AccountRequestList";
+import LoanRequestList from "./pages/LoanRequestList";
+// import ManagerDashboard from "./pages/ManagerDashboard";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -69,15 +72,35 @@ const App = () => {
               />
               <Route path="/apply-loan" element={<LoanApplicationForm />} />
               <Route
-                path="/loan-application-list"
+                path="/account-request-application-list"
                 element={
                   <AuthRoute>
                     <ManagerRoute>
-                      <List />
+                      <AccountRequestList />
                     </ManagerRoute>
                   </AuthRoute>
                 }
               />
+              <Route
+                path="/loan-request-application-list"
+                element={
+                  <AuthRoute>
+                    <ManagerRoute>
+                      <LoanRequestList />
+                    </ManagerRoute>
+                  </AuthRoute>
+                }
+              />
+              {/* <Route
+                path="/manager-dashboard"
+                element={
+                  <AuthRoute>
+                    <ManagerRoute>
+                      <ManagerDashboard />
+                    </ManagerRoute>
+                  </AuthRoute>
+                }
+              /> */}
             </Routes>
           </main>
           <Footer />

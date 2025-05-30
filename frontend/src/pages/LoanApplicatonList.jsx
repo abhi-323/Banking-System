@@ -48,30 +48,30 @@ const LoanApplicaitonList = () => {
         <table className="w-full table-auto text-sm text-left">
           <thead className="bg-gray-100 text-gray-600 font-medium border-b">
             <tr>
-              <th className="py-3 px-6">Application Date</th>
-              <th className="py-3 px-6">Requested Amount</th>
-              <th className="py-3 px-6">Interest Rate</th>
-              <th className="py-3 px-6">Tenure (Months)</th>
-              <th className="py-3 px-6">Status</th>
-              <th className="py-3 px-6">PAN</th>
+              <th className="py-3 px-6 text-center">Application Date</th>
+              <th className="py-3 px-6 text-center">Requested Amount</th>
+              <th className="py-3 px-6 text-center">Interest Rate</th>
+              <th className="py-3 px-6 text-center">Tenure (Months)</th>
+              <th className="py-3 px-6 text-center">Status</th>
+              <th className="py-3 px-6 text-center">PAN</th>
             </tr>
           </thead>
             <tbody className="text-gray-700 divide-y">
               {loanApplications.map((loan, idx) => (
                 <tr key={idx}>
-                  <td className="py-4 px-6 whitespace-nowrap">
+                  <td className="py-4 px-6 whitespace-nowrap text-center">
                     {loan.applicationDate}
                   </td>
-                  <td className="py-4 px-6 whitespace-nowrap">
+                  <td className="py-4 px-6 whitespace-nowrap text-center">
                     {loan.requestedAmount}
                   </td>
-                  <td className="py-4 px-6 whitespace-nowrap">
+                  <td className="py-4 px-6 whitespace-nowrap text-center">
                     {loan.interestRate}%
                   </td>
-                  <td className="py-4 px-6 whitespace-nowrap">
+                  <td className="py-4 px-6 whitespace-nowrap text-center">
                     {loan.tenureInMonths}
                   </td>
-                  <td className="py-4 px-6 whitespace-nowrap">
+                  <td className="py-4 px-6 whitespace-nowrap text-center">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${
                         loan.status === "APPROVED"
@@ -84,7 +84,7 @@ const LoanApplicaitonList = () => {
                       {loan.status}
                     </span>
                   </td>
-                  <td className="py-4 px-6 whitespace-nowrap">{loan.pan}</td>
+                  <td className="py-4 px-6 whitespace-nowrap text-center">{loan.pan}</td>
                 </tr>
               ))}
             </tbody>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUniversity } from "react-icons/fa";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { useSelector } from "react-redux";
 
 const Header = () => {
@@ -85,9 +85,12 @@ const NavLinks = ({ mobile = false, isAuthenticated, logout, role }) => {
 
   return (
     <>
-      <Link to="/" className={linkClass}>
-        Dashboard
+      <Link to="/" className={linkClass + (!isAuthenticated ? "" : "hidden")}>
+        Home
       </Link>
+      {/* <Link to="/manager-dashboard" className={linkClass + (role === "MANAGER" ? "" : " hidden")}>
+        Dashboard
+      </Link> */}
       <Link to="/account-details" className={linkClass + (role === "USER" ? "" : " hidden")}>
         Accounts
       </Link>
@@ -101,8 +104,13 @@ const NavLinks = ({ mobile = false, isAuthenticated, logout, role }) => {
         Loan Applications
       </Link>
       {(role && (role.includes("MANAGER") || role.includes("CLERK"))) && (
-        <Link to="/loan-application-list" className={linkClass}>
-          Loan Applications List
+        <Link to="/account-request-application-list" className={linkClass}>
+          Account Request
+        </Link>
+      )}
+      {(role && (role.includes("MANAGER") || role.includes("CLERK"))) && (
+        <Link to="/loan-request-application-list" className={linkClass}>
+          Loan Request
         </Link>
       )}
 
