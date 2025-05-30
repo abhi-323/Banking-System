@@ -48,6 +48,13 @@ public class LoanApplicationService {
 
     }
 
+    public List<LoanApplicationDTO> getAllLoanApplications() {
+        List<LoanApplication> loanApplications = loanApplicationRepo.findAll();
+        return loanApplications.stream()
+                .map(this::convertLoanApplicationDTO)
+                .toList();
+    }
+
     public LoanApplicationDTO convertLoanApplicationDTO(LoanApplication application) {
         return new LoanApplicationDTO(
                 application.getId(),

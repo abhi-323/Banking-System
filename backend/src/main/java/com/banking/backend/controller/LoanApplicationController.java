@@ -36,4 +36,10 @@ public class LoanApplicationController {
             return ResponseEntity.status(404).body("Loan application not found: " + ex.getMessage());
         }
     }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<LoanApplicationDTO>> getAllLoanApplications() {
+        List<LoanApplicationDTO> loanApplications = loanApplicationService.getAllLoanApplications();
+        return ResponseEntity.ok(loanApplications);
+    }
 }

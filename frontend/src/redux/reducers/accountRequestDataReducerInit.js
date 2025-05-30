@@ -1,3 +1,5 @@
-const initialAccountRequestState = {};
+const initialAccountRequestState = {
+    application : []
+};
 
 export default initialAccountRequestState;

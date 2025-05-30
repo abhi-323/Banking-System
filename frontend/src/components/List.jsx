@@ -55,6 +55,19 @@ const List = ({ tableItems }) => {
     }
   };
 
+  if (accountRequestData.length == 0) {
+    return (
+      <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-8">
+        <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
+          No Account Requests Found
+        </h3>
+        <p className="text-gray-600 mt-2">
+          There are currently no account requests to review.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-8">
       <div className="items-start justify-between md:flex">
@@ -78,7 +91,7 @@ const List = ({ tableItems }) => {
               <th className="py-3 px-6">IFSC Code</th>
               <th className="py-3 px-6">PAN</th>
               <th className="py-3 px-6">Status</th>
-              <th className="py-3 px-6"></th>
+              <th className="py-3 px-6">ACTION</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 divide-y">
@@ -96,10 +109,10 @@ const List = ({ tableItems }) => {
                   />
                   <div>
                     <span className="block text-gray-700 text-sm font-medium">
-                      {application.name}
+                      {application.user.name}
                     </span>
                     <span className="block text-gray-700 text-xs">
-                      {application.email}
+                      {application.user.email}
                     </span>
                   </div>
                 </td>
