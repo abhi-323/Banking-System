@@ -16,8 +16,8 @@ public class AccountRequestController {
     AccountRequestService accountRequestService;
 
     @PostMapping("/apply")
-    public AccountRequest applyAccount(@RequestBody AccountRequest accountRequest) {
-        return accountRequestService.applyAccountRequest(accountRequest);
+    public ResponseEntity<?> applyAccount(@RequestBody AccountRequest accountRequest) {
+        return ResponseEntity.ok(accountRequestService.applyAccountRequest(accountRequest));
     }
 
     @GetMapping("/getAll")
