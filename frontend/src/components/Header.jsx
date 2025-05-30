@@ -6,7 +6,7 @@ import {jwtDecode} from "jwt-decode";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userToken = localStorage.getItem("token");
-  const tokenDecoded = jwtDecode(userToken);
+  const tokenDecoded = userToken ? jwtDecode(userToken) : null;
   const role = tokenDecoded ? tokenDecoded.roles[0] : null;
   let isAuthenticated = !!userToken;
 
