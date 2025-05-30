@@ -1,4 +1,4 @@
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const ClerkRoute = ({ children }) => {
   const token = localStorage.getItem("token");

@@ -32,49 +32,56 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Signup />} />
-          <Route
-            path="/transactions"
-            element={
-              <AuthRoute>
-                <Passbook />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/account-details"
-            element={
-              <AuthRoute>
-                <AccountDetails />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/money-transfer"
-            element={
-              <AuthRoute>
-                <TransactionForm />
-              </AuthRoute>
-            }
-          />
-          <Route path="/loan-applications" element={<LoanApplicaitonList />} />
-          <Route path="/apply-loan" element={<LoanApplicationForm />} />
-          <Route
-            path="/loan-application-list"
-            element={
-              <AuthRoute>
-                <ManagerRoute>
-                  <List />
-                </ManagerRoute>
-              </AuthRoute>
-            }
-          />
-        </Routes>
-        <Footer />
+        <div className="min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Signup />} />
+              <Route
+                path="/transactions"
+                element={
+                  <AuthRoute>
+                    <Passbook />
+                  </AuthRoute>
+                }
+              />
+              <Route
+                path="/account-details"
+                element={
+                  <AuthRoute>
+                    <AccountDetails />
+                  </AuthRoute>
+                }
+              />
+              <Route
+                path="/money-transfer"
+                element={
+                  <AuthRoute>
+                    <TransactionForm />
+                  </AuthRoute>
+                }
+              />
+              <Route
+                path="/loan-applications"
+                element={<LoanApplicaitonList />}
+              />
+              <Route path="/apply-loan" element={<LoanApplicationForm />} />
+              <Route
+                path="/loan-application-list"
+                element={
+                  <AuthRoute>
+                    <ManagerRoute>
+                      <List />
+                    </ManagerRoute>
+                  </AuthRoute>
+                }
+              />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
       </BrowserRouter>
     </>
   );
