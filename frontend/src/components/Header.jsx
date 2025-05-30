@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUniversity } from "react-icons/fa";
 import {jwtDecode} from "jwt-decode";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const userToken = localStorage.getItem("token");
+  const userToken = useSelector((state) => state.userAuth.token);
   const tokenDecoded = userToken ? jwtDecode(userToken) : null;
   const role = tokenDecoded ? tokenDecoded.roles[0] : null;
   let isAuthenticated = !!userToken;
