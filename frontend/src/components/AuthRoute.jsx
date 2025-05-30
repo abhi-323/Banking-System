@@ -1,13 +1,15 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 const AuthRoute = ({ children }) => {
   const [wait, setwait] = useState(true);
-  const [token] = useSelector((state) => [state.userAuth.token]);
+  const token = localStorage.getItem("token");
 
-  setTimeout(() => {
-    setwait(false);
-  }, !token);
+  useEffect(() => {
+    setTimeout(() => {
+      setwait(false);
+    }, !token);
+  }, [token]);
+
   if (wait) {
     return (
       <>

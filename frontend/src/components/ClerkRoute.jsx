@@ -1,8 +1,7 @@
-import { useSelector } from "react-redux";
-import jwtDecode from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 const ClerkRoute = ({ children }) => {
-  const [token] = useSelector((state) => [state.userAuth.token]);
+  const token = localStorage.getItem("token");
   const decoded = jwtDecode(token);
   const role = decoded ? decoded.roles : null;
   return role === "CLERK" ? (

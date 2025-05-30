@@ -19,8 +19,7 @@ const LoanApplicaitonList = () => {
       },
     })
     .then((response) => {
-      dispatch(setLoanApplication(response.data))
-      console.log(response.data)
+      dispatch(setLoanApplication(response.data));
     })
     .catch((error) => {
       console.error("Error:", error);

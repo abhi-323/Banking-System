@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUniversity } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import {jwtDecode} from "jwt-decode";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const userToken = useSelector((state) => state.userAuth.token);
-  let isAuthenticated = userToken ? true : false;
+  const userToken = localStorage.getItem("token");
+  const tokenDecoded = jwtDecode(userToken);
+  const role = tokenDecoded ? tokenDecoded.roles[0] : null;
+  let isAuthenticated = !!userToken;
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const logout = () => {};
@@ -50,7 +52,7 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-8">
-          <NavLinks isAuthenticated={isAuthenticated} logout={logout} />
+          <NavLinks isAuthenticated={isAuthenticated} logout={logout} role={role} />
         </nav>
       </div>
 
@@ -62,6 +64,7 @@ const Header = () => {
               mobile
               isAuthenticated={isAuthenticated}
               logout={logout}
+              role={role}
             />
           </nav>
         </div>
@@ -70,7 +73,7 @@ const Header = () => {
   );
 };
 
-const NavLinks = ({ mobile = false, isAuthenticated, logout }) => {
+const NavLinks = ({ mobile = false, isAuthenticated, logout, role }) => {
   const linkClass =
     "text-gray-700 hover:text-blue-700 font-medium transition-all duration-200";
   const buttonBase =
@@ -81,21 +84,23 @@ const NavLinks = ({ mobile = false, isAuthenticated, logout }) => {
       <Link to="/" className={linkClass}>
         Dashboard
       </Link>
-      <Link to="/account-details" className={linkClass}>
+      <Link to="/account-details" className={linkClass + (role === "USER" ? "" : " hidden")}>
         Accounts
       </Link>
-      <Link to="/transactions" className={linkClass}>
+      <Link to="/transactions" className={linkClass + (role === "USER" ? "" : " hidden")}>
         Transactions
       </Link>
-      <Link to="/apply-loan" className={linkClass}>
+      <Link to="/apply-loan" className={linkClass + (role === "USER" ? "" : " hidden")}>
         Loans
       </Link>
-      <Link to="/loan-applications" className={linkClass}>
+      <Link to="/loan-applications" className={linkClass + (role === "USER" ? "" : " hidden")}>
         Loan Applications
       </Link>
-      <Link to="/loan-application-list" className={linkClass}>
-        Loan Applications List
-      </Link>
+      {(role && (role.includes("MANAGER") || role.includes("CLERK"))) && (
+        <Link to="/loan-application-list" className={linkClass}>
+          Loan Applications List
+        </Link>
+      )}
 
       {isAuthenticated ? (
         <button
