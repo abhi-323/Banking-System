@@ -1,34 +1,32 @@
 package com.banking.backend.service;
 
-import com.banking.backend.models.AccountRequest;
+import com.banking.backend.models.Branch;
 import com.banking.backend.models.Users;
-import com.banking.backend.repository.AccountRequestRepo;
+import com.banking.backend.repository.BranchRepo;
 import com.banking.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
+
 
 @Service
-public class AccountRequestService {
+public class BranchService {
     @Autowired
-    AccountRequestRepo accountRequestRepo;
+    BranchRepo branchRepo;
     @Autowired
     UserRepository userRepository;
 
-
-    public AccountRequest applyAccountRequest(AccountRequest accountRequest) {
+    public ResponseEntity<?> branchDetail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Users user=userRepository.findByEmail(username);
-        accountRequest.setUser(user);
-        return  accountRequestRepo.save(accountRequest);
+        Users user = userRepository.findByEmail(username);
+        Optional<Branch> branch = branchRepo.findByManager(user);
+        return ResponseEntity.ok(branch);
     }
 
-    public List<AccountRequest> getAllAccountRequests() {
-        return accountRequestRepo.findAll();
-    }
+
 }
