@@ -85,20 +85,25 @@ const NavLinks = ({ mobile = false, isAuthenticated, logout, role }) => {
 
   return (
     <>
-      <Link to="/" className={linkClass + (!isAuthenticated ? "" : "hidden")}>
-        Home
-      </Link>
+      { !isAuthenticated &&
+        <Link to="/" className={linkClass}>
+          Home
+        </Link>
+      }
       {/* <Link to="/manager-dashboard" className={linkClass + (role === "MANAGER" ? "" : " hidden")}>
         Dashboard
       </Link> */}
       <Link to="/account-details" className={linkClass + (role === "USER" ? "" : " hidden")}>
         Accounts
       </Link>
+      <Link to="/loan-account-details" className={linkClass + (role === "USER" ? "" : " hidden")}>
+        Loan Accounts
+      </Link>
       <Link to="/transactions" className={linkClass + (role === "USER" ? "" : " hidden")}>
         Transactions
       </Link>
       <Link to="/apply-loan" className={linkClass + (role === "USER" ? "" : " hidden")}>
-        Loans
+        Apply Loan
       </Link>
       <Link to="/loan-applications" className={linkClass + (role === "USER" ? "" : " hidden")}>
         Loan Applications

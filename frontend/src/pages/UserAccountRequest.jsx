@@ -4,10 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { setAccountRequestData } from "../redux/reducers/accountRequestDataReducer";
 import axios from "axios";
 
-const AccountRequestList = () => {
-  const [refreshFlag, setRefreshFlag] = useState(false);
+const UserAccountRequest = () => {
   const token = useSelector((state) => state.userAuth.token);
-  const accountRequestData = useSelector(
+  const application = useSelector(
     (state) => state.accountRequest.application
   );
   const dispatch = useDispatch();
@@ -15,7 +14,7 @@ const AccountRequestList = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/accountRequest/getAll", {
+      .get("http://localhost:8080/api/accountRequest/getByUser", {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -26,65 +25,13 @@ const AccountRequestList = () => {
       })
       .catch((error) => {
         console.error("Error:", error);
+        navigate("/account-request");
       });
-  }, [dispatch, token, refreshFlag]);
+  }, [dispatch, token, navigate]);
 
   const handleRowClick = (id) => {
     navigate(`/user/${id}`);
   };
-
-  const handleApproval = async (id) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/bankAccount/create-approve",
-        { id },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      console.log("Approval successful:", response.data);
-      setRefreshFlag((prev) => !prev);
-    } catch (error) {
-      console.error("Error approving account:", error);
-    }
-  };
-
-  const handleReject = async (id) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/accountRequest/reject",
-        { id },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      console.log("Reject successful:", response.data);
-      setRefreshFlag((prev) => !prev);
-    } catch (error) {
-      console.error("Error rejecting loan application:", error);
-    }
-  };
-  
-  if (accountRequestData.length == 0) {
-    return (
-      <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-8">
-        <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
-          No Account Requests Found
-        </h3>
-        <p className="text-gray-600 mt-2">
-          There are currently no account requests to review.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-8">
@@ -94,7 +41,7 @@ const AccountRequestList = () => {
             Account Requests
           </h3>
           <p className="text-gray-600 mt-2">
-            Review and approve or reject user account requests.
+            Your Account is under review. Please wait for the approval.
           </p>
         </div>
       </div>
@@ -109,11 +56,10 @@ const AccountRequestList = () => {
               <th className="py-3 px-6 text-center">IFSC Code</th>
               <th className="py-3 px-6 text-center">PAN</th>
               <th className="py-3 px-6 text-center">Status</th>
-              <th className="py-3 px-6 text-center">ACTION</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 divide-y">
-            {accountRequestData.map((application) => (
+            {application.map((application) => (
               <tr
                 key={application.id}
                 className="cursor-pointer hover:bg-gray-100"
@@ -154,25 +100,6 @@ const AccountRequestList = () => {
                     {application.status}
                   </span>
                 </td>
-                {application.status === "PENDING" && (
-                  <td
-                    className="text-center px-6 whitespace-nowrap"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <button
-                      className="py-2 px-3 font-medium text-green-600 hover:text-green-500 duration-150 hover:bg-gray-50 rounded-lg"
-                      onClick={() => handleApproval(application.id)}
-                    >
-                      Approve
-                    </button>
-                    <button
-                      className="py-2 px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
-                      onClick={() => handleReject(application.id)}
-                    >
-                      Reject
-                    </button>
-                  </td>
-                )}
               </tr>
             ))}
           </tbody>
@@ -182,4 +109,4 @@ const AccountRequestList = () => {
   );
 };
 
-export default AccountRequestList;
+export default UserAccountRequest;

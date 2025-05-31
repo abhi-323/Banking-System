@@ -55,6 +55,18 @@ public class LoanApplicationService {
                 .toList();
     }
 
+    public void rejectLoanApplication(UUID id) {
+        LoanApplication loanApplication = loanApplicationRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Loan application not found with ID: " + id));
+
+        if (loanApplication.getStatus() != LoanApplication.ApplicationStatus.PENDING) {
+            throw new RuntimeException("Loan application is not in a PENDING state.");
+        }
+
+        loanApplication.setStatus(LoanApplication.ApplicationStatus.REJECTED);
+        loanApplicationRepo.save(loanApplication);
+    }
+
     public LoanApplicationDTO convertLoanApplicationDTO(LoanApplication application) {
         return new LoanApplicationDTO(
                 application.getId(),

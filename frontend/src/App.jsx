@@ -20,6 +20,8 @@ import ClerkRoute from "./components/ClerkRoute";
 import AccountRequest from "./pages/AccountRequest";
 import AccountRequestList from "./pages/AccountRequestList";
 import LoanRequestList from "./pages/LoanRequestList";
+import LoanAccountDetails from "./pages/LoanAccountDetails";
+import UserAccountRequest from "./pages/UserAccountRequest";
 // import ManagerDashboard from "./pages/ManagerDashboard";
 
 const App = () => {
@@ -55,6 +57,30 @@ const App = () => {
                 element={
                   <AuthRoute>
                     <AccountDetails />
+                  </AuthRoute>
+                }
+              />
+              <Route
+                path="/account-request"
+                element={
+                  <AuthRoute>
+                    <AccountRequest />
+                  </AuthRoute>
+                }
+              />
+              <Route
+                path="/account-request-list"
+                element={
+                  <AuthRoute>
+                    <UserAccountRequest />
+                  </AuthRoute>
+                }
+              />
+              <Route
+                path="/loan-account-details"
+                element={
+                  <AuthRoute>
+                    <LoanAccountDetails />
                   </AuthRoute>
                 }
               />

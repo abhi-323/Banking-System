@@ -36,7 +36,6 @@ const Login = () => {
     localStorage.setItem("token", token);
 
     setTimeout(() => {
-      console.log("ROLE 2: ", role);
       role === "MANAGER" ? navigate("/manager-dashboard") : navigate("/account-details");
     }, 2500);
   };

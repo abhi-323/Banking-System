@@ -39,10 +39,10 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                          .requestMatchers("api/user/login","api/user/signup","api/accountRequest/getAll","api/loanApplication/**").permitAll()
+                          .requestMatchers("api/user/login","api/user/signup","api/accountRequest/**","api/loanApplication/**", "api/manager/create-approve", "api/loanAccount/**").permitAll()
 //                        .requestMatchers("api/user/clan").hasRole("USER")
 //                        .requestMatchers("api/user/clerk").hasRole("CLERK")
-                        .requestMatchers("api/manager/create-approve").hasRole("MANAGER")
+//                        .requestMatchers("").hasRole("MANAGER")
                           .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

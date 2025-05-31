@@ -15,14 +15,12 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
     @PostMapping("/signup")
-    ResponseEntity<?> registerUser(@RequestBody  Users user) {
+    ResponseEntity<?> registerUser(@RequestBody Users user) {
         userService.register(user);
         return ResponseEntity.ok().build();
     }
+
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody Users user) throws Exception {
         return ResponseEntity.ok(userService.verify(user));

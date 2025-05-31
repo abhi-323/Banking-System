@@ -1,28 +1,56 @@
-import React, { useState } from "react";
-import { SiCashapp } from "react-icons/si"; // Placeholder bank icon
+import React from "react";
+import { useForm } from "react-hook-form";
+import { ToastContainer, toast } from "react-toastify";
+import { SiCashapp } from "react-icons/si";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
+
+// Schema validation
+const signupSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Please enter a valid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
 
 const Signup = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: zodResolver(signupSchema),
   });
 
-  const [message, setMessage] = useState("");
+  const onSubmit = async (data) => {
+    const payload = {
+      ...data,
+      role: "USER",
+      status: "ACTIVE",
+    };
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    try {
+      await axios.post("http://localhost:8080/api/user/signup", payload);
+      toast.success("Signup successful! Please login.");
+      reset();
+      setTimeout(() => navigate("/login"), 3000);
+    } catch (error) {
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Signup failed. Please try again.");
+      }
+      console.error(error);
+    }
   };
-
-  const handleSubmit = async (e) => {};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-white">
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl border border-blue-200">
-        {/* Bank Logo */}
         <div className="flex items-center justify-center mb-6">
           <SiCashapp className="text-4xl text-blue-600" />
           <h1 className="ml-2 text-3xl font-extrabold text-blue-700 tracking-tight">
@@ -34,22 +62,20 @@ const Signup = () => {
           Create Your Account
         </h2>
 
-        {message && <p className="mb-4 text-center text-red-500">{message}</p>}
-
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div>
             <label className="block text-gray-700 text-sm font-medium mb-1">
               Full Name
             </label>
             <input
               type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
+              {...register("name")}
               className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
               placeholder="John Doe"
             />
+            {errors.name && (
+              <p className="text-xs text-red-600 mt-1">{errors.name.message}</p>
+            )}
           </div>
 
           <div>
@@ -58,13 +84,13 @@ const Signup = () => {
             </label>
             <input
               type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
+              {...register("email")}
               className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
               placeholder="you@example.com"
             />
+            {errors.email && (
+              <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>
+            )}
           </div>
 
           <div>
@@ -73,13 +99,13 @@ const Signup = () => {
             </label>
             <input
               type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
+              {...register("password")}
               className="w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
               placeholder="••••••••"
             />
+            {errors.password && (
+              <p className="text-xs text-red-600 mt-1">{errors.password.message}</p>
+            )}
           </div>
 
           <button
@@ -90,12 +116,13 @@ const Signup = () => {
           </button>
         </form>
         <p className="text-xs text-center text-gray-500 mt-6">
-          Aleary a user{" "}
+          Already a user?{" "}
           <a href="/login" className="text-blue-600 hover:underline">
-            login here
+            Login here
           </a>
         </p>
       </div>
+      <ToastContainer position="top-center" autoClose={2000} />
     </div>
   );
 };

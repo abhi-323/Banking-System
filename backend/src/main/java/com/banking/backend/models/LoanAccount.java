@@ -36,6 +36,9 @@ public class LoanAccount {
     @Column(nullable = false)
     private BigDecimal outstandingAmount;
 
+    @Column(unique = true)
+    private String loanAccountNumber;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LoanStatus status;

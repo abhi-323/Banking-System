@@ -1,58 +1,88 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setLoanRequestApplication } from "../redux/reducers/loanRequestApplicationReducer";
 import axios from "axios";
 
 const LoanRequestList = () => {
+  const [refreshFlag, setRefreshFlag] = useState(false);
   const token = useSelector((state) => state.userAuth.token);
-  const loanApplications = useSelector((state) => state.loanRequestApplication.application);
+  const loanApplications = useSelector(
+    (state) => state.loanRequestApplication.application
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-   useEffect(() => {
-      axios.get("http://localhost:8080/api/loanApplication/getAll", {
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/loanApplication/getAll", {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       })
       .then((response) => {
-        dispatch(setLoanRequestApplication(response.data))
-        console.log(response.data)
+        dispatch(setLoanRequestApplication(response.data));
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-    }, [dispatch, token]);
+  }, [dispatch, token, refreshFlag]);
 
   const handleRowClick = (id) => {
     navigate(`/user/${id}`);
   };
 
   const handleApproval = async (id) => {
-    // try {
-    //   const response = await fetch(
-    //     "http://localhost:8080/api/loanApplication/approve",
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({ id }),
-    //     }
-    //   );
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/loanAccount/approve",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id }),
+        }
+      );
 
-    //   if (!response.ok) {
-    //     throw new Error("Failed to approve account");
-    //   }
+      if (!response.ok) {
+        throw new Error("Failed to approve account");
+      }
 
-    //   const data = await response.json();
-    //   console.log("Approval successful:", data);
-    //   // Optionally refresh or update the UI here
-    // } catch (error) {
-    //   console.error("Error approving account:", error);
-    // }
+      const data = await response.json();
+      console.log("Approval successful:", data);
+
+      setRefreshFlag((prev) => !prev);
+    } catch (error) {
+      console.error("Error approving account:", error);
+    }
+  };
+
+  const handleReject = async (id) => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/loanApplication/reject",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error rejecting loan application");
+      }
+
+      const data = await response.text();
+      console.log("Reject successful:", data);
+      
+      setRefreshFlag((prev) => !prev);
+    } catch (error) {
+      console.error("Error rejecting loan application:", error);
+    }
   };
 
   if (loanApplications.length == 0) {
@@ -94,49 +124,56 @@ const LoanRequestList = () => {
               <th className="py-3 px-6 text-center">ACTION</th>
             </tr>
           </thead>
-            <tbody className="text-gray-700 divide-y">
-              {loanApplications.map((loan, idx) => (
-                <tr key={idx}>
-                  <td className="py-4 px-6 whitespace-nowrap text-center">
-                    {loan.applicationDate}
-                  </td>
-                  <td className="py-4 px-6 whitespace-nowrap text-center">
-                    {loan.requestedAmount}
-                  </td>
-                  <td className="py-4 px-6 whitespace-nowrap text-center">
-                    {loan.interestRate}%
-                  </td>
-                  <td className="py-4 px-6 whitespace-nowrap text-center">
-                    {loan.tenureInMonths}
-                  </td>
-                  <td className="py-4 px-6 whitespace-nowrap text-center">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        loan.status === "APPROVED"
-                          ? "text-green-600 bg-green-50"
-                          : loan.status === "REJECTED"
-                          ? "text-red-600 bg-red-50"
-                          : "text-yellow-600 bg-yellow-50"
-                      }`}
-                    >
-                      {loan.status}
-                    </span>
-                  </td>
-                  <td className="py-4 px-6 whitespace-nowrap text-center">{loan.pan}</td>
-                <td
-                  className="text-center px-6 whitespace-nowrap"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <button
-                    className="py-2 px-3 font-medium text-green-600 hover:text-green-500 duration-150 hover:bg-gray-50 rounded-lg"
-                    onClick={() => handleApproval(loan.id)}
-                  >
-                    Approve
-                  </button>
-                  <button className="py-2 px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg">
-                    Reject
-                  </button>
+          <tbody className="text-gray-700 divide-y">
+            {loanApplications.map((loan, idx) => (
+              <tr key={idx}>
+                <td className="py-4 px-6 whitespace-nowrap text-center">
+                  {loan.applicationDate}
                 </td>
+                <td className="py-4 px-6 whitespace-nowrap text-center">
+                  {loan.requestedAmount}
+                </td>
+                <td className="py-4 px-6 whitespace-nowrap text-center">
+                  {loan.interestRate}%
+                </td>
+                <td className="py-4 px-6 whitespace-nowrap text-center">
+                  {loan.tenureInMonths}
+                </td>
+                <td className="py-4 px-6 whitespace-nowrap text-center">
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      loan.status === "APPROVED"
+                        ? "text-green-600 bg-green-50"
+                        : loan.status === "REJECTED"
+                        ? "text-red-600 bg-red-50"
+                        : "text-yellow-600 bg-yellow-50"
+                    }`}
+                  >
+                    {loan.status}
+                  </span>
+                </td>
+                <td className="py-4 px-6 whitespace-nowrap text-center">
+                  {loan.pan}
+                </td>
+                {loan.status === "PENDING" && (
+                  <td
+                    className="text-center px-6 whitespace-nowrap"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                      className="py-2 px-3 font-medium text-green-600 hover:text-green-500 duration-150 hover:bg-gray-50 rounded-lg"
+                      onClick={() => handleApproval(loan.id)}
+                    >
+                      Approve
+                    </button>
+                    <button
+                      className="py-2 px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
+                      onClick={() => handleReject(loan.id)}
+                    >
+                      Reject
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

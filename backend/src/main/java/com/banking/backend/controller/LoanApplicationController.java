@@ -42,4 +42,14 @@ public class LoanApplicationController {
         List<LoanApplicationDTO> loanApplications = loanApplicationService.getAllLoanApplications();
         return ResponseEntity.ok(loanApplications);
     }
+
+    @PostMapping("/reject")
+    public ResponseEntity<?> rejectLoanApplication(@RequestBody IdRequest idRequest) {
+        try {
+            loanApplicationService.rejectLoanApplication(idRequest.getId());
+            return ResponseEntity.ok("Loan application rejected successfully");
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(404).body("Error rejecting loan application: " + ex.getMessage());
+        }
+    }
 }

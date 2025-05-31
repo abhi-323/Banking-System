@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setAccountDetails } from "../redux/reducers/accountDetailsReducer";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const AccountDetails = () => {
   const account = useSelector((state) => state.accountDetails.account);
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -17,12 +19,17 @@ const AccountDetails = () => {
         },
       })
       .then((response) => {
-        dispatch(setAccountDetails(response.data));
+        if (response.data && response.data.id) {
+          dispatch(setAccountDetails(response.data));
+        } else {
+          navigate("/account-request-list");
+        }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.error("Error fetching account details:", error);
+        navigate("/account-request-list");
       });
-  }, [dispatch, token]);
+  }, [dispatch, token, navigate]);
 
   if (!account.id) return <p>Loading account information...</p>;
 
