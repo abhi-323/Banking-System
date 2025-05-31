@@ -22,7 +22,6 @@ public class AccountRequestService {
 
 
     public AccountRequest applyAccountRequest(AccountRequest accountRequest) {
-        System.out.println();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Users user = userRepository.findByEmail(username);

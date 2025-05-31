@@ -3,6 +3,7 @@ package com.banking.backend.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -25,10 +26,10 @@ public class LoanApplication {
     private BigDecimal requestedAmount;
 
     @Column(nullable = false)
-    private BigDecimal interestRate; // Proposed interest rate
+    private BigDecimal interestRate;
 
     @Column(nullable = false)
-    private int tenureInMonths; // How many months to repay
+    private int tenureInMonths;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -39,6 +40,10 @@ public class LoanApplication {
 
     @Column(nullable = false)
     private String pan;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_id", nullable = false)
+    private Branch branch;
 
     public enum ApplicationStatus {
         PENDING,

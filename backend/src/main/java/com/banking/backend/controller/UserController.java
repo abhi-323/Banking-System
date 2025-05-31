@@ -10,19 +10,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-   @Autowired
+    @Autowired
     UserService userService;
     @Autowired
     private UserRepository userRepository;
 
     @PostMapping("/signup")
     ResponseEntity<?> registerUser(@RequestBody Users user) {
-        userService.register(user);
-        return ResponseEntity.ok().build();
+        return userService.register(user);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody Users user) throws Exception {
-        return ResponseEntity.ok(userService.verify(user));
+        return userService.verify(user);
     }
 }

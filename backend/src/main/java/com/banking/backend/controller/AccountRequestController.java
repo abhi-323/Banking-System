@@ -20,7 +20,7 @@ public class AccountRequestController {
     public ResponseEntity<?> applyAccount(@RequestBody AccountRequest accountRequest) {
         return ResponseEntity.ok(accountRequestService.applyAccountRequest(accountRequest));
     }
-
+  
     @GetMapping("/getAll")
     public ResponseEntity<List<AccountRequest>> getAllAccountRequests() {
         List<AccountRequest> requests = accountRequestService.getAllAccountRequests();

@@ -48,7 +48,7 @@ public class JwtFilter extends OncePerRequestFilter implements ApplicationContex
 
             if (jwtService.validateToken(token, userDetails)) {
                 List<String> roles = JwtService.extractRoles(token);
-                System.out.println("Extracted Roles from Token: " + roles);
+//                System.out.println("Extracted Roles from Token: " + roles);
 
                 List<GrantedAuthority> authorities = roles.stream()
                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // important for Spring Security
