@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUniversity } from "react-icons/fa";
+import { jwtDecode } from "jwt-decode";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isAuthenticated = "";
+  const userToken = useSelector((state) => state.userAuth.token);
+  const tokenDecoded = userToken ? jwtDecode(userToken) : null;
+  const role = tokenDecoded ? tokenDecoded.roles[0] : null;
+  let isAuthenticated = !!userToken;
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const logout = () => {};
+  const logout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  };
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
+    <header className="bg-white shadow-md top-0 z-50 border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <Link
           to="/"
@@ -48,7 +56,7 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-8">
-          <NavLinks isAuthenticated={isAuthenticated} logout={logout} />
+          <NavLinks isAuthenticated={isAuthenticated} logout={logout} role={role} />
         </nav>
       </div>
 
@@ -60,6 +68,7 @@ const Header = () => {
               mobile
               isAuthenticated={isAuthenticated}
               logout={logout}
+              role={role}
             />
           </nav>
         </div>
@@ -68,7 +77,7 @@ const Header = () => {
   );
 };
 
-const NavLinks = ({ mobile = false, isAuthenticated, logout }) => {
+const NavLinks = ({ mobile = false, isAuthenticated, logout, role }) => {
   const linkClass =
     "text-gray-700 hover:text-blue-700 font-medium transition-all duration-200";
   const buttonBase =
@@ -76,18 +85,39 @@ const NavLinks = ({ mobile = false, isAuthenticated, logout }) => {
 
   return (
     <>
-      <Link to="/" className={linkClass}>
+      { !isAuthenticated &&
+        <Link to="/" className={linkClass}>
+          Home
+        </Link>
+      }
+      {/* <Link to="/manager-dashboard" className={linkClass + (role === "MANAGER" ? "" : " hidden")}>
         Dashboard
-      </Link>
-      <Link to="/account-details" className={linkClass}>
+      </Link> */}
+      <Link to="/account-details" className={linkClass + (role === "USER" ? "" : " hidden")}>
         Accounts
       </Link>
-      <Link to="/transactions" className={linkClass}>
+      <Link to="/loan-account-details" className={linkClass + (role === "USER" ? "" : " hidden")}>
+        Loan Accounts
+      </Link>
+      <Link to="/transactions" className={linkClass + (role === "USER" ? "" : " hidden")}>
         Transactions
       </Link>
-      <Link to="/support" className={linkClass}>
-        Loans
+      <Link to="/apply-loan" className={linkClass + (role === "USER" ? "" : " hidden")}>
+        Apply Loan
       </Link>
+      <Link to="/loan-applications" className={linkClass + (role === "USER" ? "" : " hidden")}>
+        Loan Applications
+      </Link>
+      {(role && (role.includes("MANAGER") || role.includes("CLERK"))) && (
+        <Link to="/account-request-application-list" className={linkClass}>
+          Account Request
+        </Link>
+      )}
+      {(role && (role.includes("MANAGER") || role.includes("CLERK"))) && (
+        <Link to="/loan-request-application-list" className={linkClass}>
+          Loan Request
+        </Link>
+      )}
 
       {isAuthenticated ? (
         <button

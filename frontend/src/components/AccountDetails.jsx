@@ -1,7 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setAccountDetails } from "../redux/reducers/accountDetailsReducer";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const AccountDetails = ({ account }) => {
-  if (!account) return <p>Loading account information...</p>;
+const AccountDetails = () => {
+  const account = useSelector((state) => state.accountDetails.account);
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/bankAccount/getAccountDetail", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        if (response.data && response.data.id) {
+          dispatch(setAccountDetails(response.data));
+        } else {
+          navigate("/account-request-list");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching account details:", error);
+        navigate("/account-request-list");
+      });
+  }, [dispatch, token, navigate]);
+
+  if (!account.id) return <p>Loading account information...</p>;
 
   return (
     <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
@@ -11,8 +41,8 @@ const AccountDetails = ({ account }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-800">
         <div>
           <h3 className="font-semibold text-lg mb-2">Account Holder</h3>
-          <p>{account.user.fullName}</p>
-          <p className="text-sm text-gray-600">{account.user.email}</p>
+          <p>{account.userName}</p>
+          <p className="text-sm text-gray-600">{account.userEmail}</p>
         </div>
 
         <div>
@@ -24,7 +54,7 @@ const AccountDetails = ({ account }) => {
             <strong>Account Type:</strong> {account.accountType}
           </p>
           <p>
-            <strong>Status:</strong> {account.status}
+            <strong>Status:</strong> {account.userStatus}
           </p>
         </div>
 

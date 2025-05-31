@@ -15,10 +15,6 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
     @PostMapping("/signup")
     ResponseEntity<?> registerUser(@RequestBody Users user) {
         return userService.register(user);

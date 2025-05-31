@@ -1,9 +1,8 @@
-import React from "react";
 import { FaUniversity } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-white/60 backdrop-blur-md border-t border-white/20 shadow-inner dark:bg-gray-900">
+    <footer className="w-full relative bg-white/60 backdrop-blur-md border-t border-white/20 shadow-inner dark:bg-gray-900 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-center">
         <a
           href="#"

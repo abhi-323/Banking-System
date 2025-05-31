@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const branches = [
@@ -9,7 +10,8 @@ const branches = [
   { name: "Hyderabad - Banjara Hills", ifsc: "AXIS0002345" },
 ];
 
-const AccountRequest = ({ userId }) => {
+const AccountRequest = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -28,13 +30,24 @@ const AccountRequest = ({ userId }) => {
       ifscCode: branchData ? branchData.ifsc : data.ifscCode,
       pan: data.pan,
       status: "PENDING",
-      user: { id: userId },
     };
 
     try {
-      await axios.post("/api/account-requests", payload);
+      const token = localStorage.getItem("token");
+
+      await axios.post(
+        "http://localhost:8080/api/accountRequest/apply",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       alert("Account application submitted successfully.");
       reset();
+      navigate("/account-request");
     } catch (err) {
       console.error(err);
       alert("Failed to submit application.");
@@ -64,7 +77,7 @@ const AccountRequest = ({ userId }) => {
             <option value="">-- Select Account Type --</option>
             <option value="SAVINGS">Savings Account</option>
             <option value="CURRENT">Current Account</option>
-            <option value="FIXED">Fixed Deposit</option>
+            <option value="FIXED_DEPOSIT">Fixed Deposit</option>
           </select>
           {errors.requestedType && (
             <p className="text-red-600 text-sm">

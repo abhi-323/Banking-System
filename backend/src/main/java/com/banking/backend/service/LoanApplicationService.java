@@ -1,5 +1,8 @@
 package com.banking.backend.service;
 
+import com.banking.backend.DTO.BankAccountDTO;
+import com.banking.backend.DTO.LoanApplicationDTO;
+import com.banking.backend.models.BankAccount;
 import com.banking.backend.models.LoanApplication;
 import com.banking.backend.models.Users;
 import com.banking.backend.repository.LoanApplicationRepo;
@@ -9,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLOutput;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -26,15 +31,55 @@ public class LoanApplicationService {
         loanApplicationRepo.save(loanApplication);
     }
 
-    public LoanApplication getLoanApplicationById(UUID id) {
-        LoanApplication loanApplication = loanApplicationRepo.findById(id).orElseThrow(() -> new RuntimeException("Loan application not found"));
+    public List<LoanApplicationDTO> getLoanApplicationById() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Users user=userRepository.findByEmail(username);
-        if (loanApplication.getUser().getId() == user.getId()) {
-            return loanApplication;
-        } else {
-            throw new RuntimeException("You are not authorized to view this loan application");
+        Users user = userRepository.findByEmail(username);
+        List<LoanApplication> loanApplication = loanApplicationRepo.findByUser(user);
+        System.out.println("------------> Loan Applicaiton -----------> " + loanApplication);
+
+        if (loanApplication.isEmpty()) {
+            throw new RuntimeException("No loan applications found for this user");
         }
+
+        return loanApplication.stream()
+                .map(this::convertLoanApplicationDTO)
+                .toList();
+
+    }
+
+    public List<LoanApplicationDTO> getAllLoanApplications() {
+        List<LoanApplication> loanApplications = loanApplicationRepo.findAll();
+        return loanApplications.stream()
+                .map(this::convertLoanApplicationDTO)
+                .toList();
+    }
+
+    public void rejectLoanApplication(UUID id) {
+        LoanApplication loanApplication = loanApplicationRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Loan application not found with ID: " + id));
+
+        if (loanApplication.getStatus() != LoanApplication.ApplicationStatus.PENDING) {
+            throw new RuntimeException("Loan application is not in a PENDING state.");
+        }
+
+        loanApplication.setStatus(LoanApplication.ApplicationStatus.REJECTED);
+        loanApplicationRepo.save(loanApplication);
+    }
+
+    public LoanApplicationDTO convertLoanApplicationDTO(LoanApplication application) {
+        return new LoanApplicationDTO(
+                application.getId(),
+                application.getRequestedAmount(),
+                application.getInterestRate(),
+                application.getTenureInMonths(),
+                application.getStatus(),
+                application.getApplicationDate(),
+                application.getPan(),
+                application.getUser().getId(),
+                application.getUser().getName(),
+                application.getUser().getEmail(),
+                application.getUser().getStatus()
+        );
     }
 }

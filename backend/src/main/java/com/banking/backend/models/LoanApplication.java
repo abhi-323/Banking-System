@@ -1,5 +1,6 @@
 package com.banking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,6 +19,7 @@ public class LoanApplication {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private Users user;
 
     @Column(nullable = false)
@@ -35,8 +37,9 @@ public class LoanApplication {
 
     @Column
     private LocalDate applicationDate;
+
     @Column(nullable = false)
-    private String PAN;
+    private String pan;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id", nullable = false)
