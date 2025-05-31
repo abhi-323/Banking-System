@@ -21,9 +21,8 @@ public class TransactionController {
         return  ResponseEntity.ok(transactionService.makeTransactionRequest(transaction));
     }
 
-    @GetMapping("history")
-    public ResponseEntity<List<Transactions>> getAllTransactions() {
-        List<Transactions> transactions = transactionService.getAllTransactions();
-        return ResponseEntity.ok(transactions);
+    @GetMapping("/history")
+    public ResponseEntity<List<TransactionDTO>> getAllTransactions() {
+        return ResponseEntity.ok(transactionService.getAllTransactions().getBody());
     }
 }

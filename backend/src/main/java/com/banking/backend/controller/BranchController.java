@@ -18,4 +18,9 @@ public class BranchController {
     public ResponseEntity<?> branchDetails() {
         return ResponseEntity.ok(branchService.branchDetail());
     }
+
+    @GetMapping("/all-branch")
+    public ResponseEntity<?> getAllBranches() {
+        return branchService.getAllBranch();
+    }
 }

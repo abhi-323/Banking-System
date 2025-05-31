@@ -16,6 +16,10 @@ public class Transactions {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private Users user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_account_id")
     private BankAccount fromAccount;
 
