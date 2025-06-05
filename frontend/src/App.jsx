@@ -22,7 +22,7 @@ import AccountRequestList from "./pages/AccountRequestList";
 import LoanRequestList from "./pages/LoanRequestList";
 import LoanAccountDetails from "./pages/LoanAccountDetails";
 import UserAccountRequest from "./pages/UserAccountRequest";
-// import ManagerDashboard from "./pages/ManagerDashboard";
+import ManagerDashboard from "./pages/ManagerDashboard";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -117,7 +117,7 @@ const App = () => {
                   </AuthRoute>
                 }
               />
-              {/* <Route
+              <Route
                 path="/manager-dashboard"
                 element={
                   <AuthRoute>
@@ -126,7 +126,7 @@ const App = () => {
                     </ManagerRoute>
                   </AuthRoute>
                 }
-              /> */}
+              />
             </Routes>
           </main>
           <Footer />

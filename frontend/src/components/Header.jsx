@@ -90,9 +90,9 @@ const NavLinks = ({ mobile = false, isAuthenticated, logout, role }) => {
           Home
         </Link>
       }
-      {/* <Link to="/manager-dashboard" className={linkClass + (role === "MANAGER" ? "" : " hidden")}>
+      <Link to="/manager-dashboard" className={linkClass + (role === "MANAGER" ? "" : " hidden")}>
         Dashboard
-      </Link> */}
+      </Link>
       <Link to="/account-details" className={linkClass + (role === "USER" ? "" : " hidden")}>
         Accounts
       </Link>
