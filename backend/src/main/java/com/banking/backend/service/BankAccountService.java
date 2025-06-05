@@ -36,7 +36,12 @@ public class BankAccountService {
         if (optionalRequest.isEmpty()) {
             throw new IllegalArgumentException("Account request with ID " + id + " not found.");
         }
+
         AccountRequest request = optionalRequest.get();
+
+        request.setStatus(AccountRequest.Status.APPROVED);
+        accountRequestRepo.save(request);
+
         BankAccount newAccount = new BankAccount();
         newAccount.setUser(request.getUser());
         newAccount.setAccountNumber(generateAccountNumber());

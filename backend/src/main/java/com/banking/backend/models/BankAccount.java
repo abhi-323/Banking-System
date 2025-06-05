@@ -25,7 +25,6 @@ public class BankAccount {
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore
     private Users user;
 
     @Column(name = "account_number", nullable = false, unique = true, length = 20)
