@@ -22,6 +22,9 @@ const UserAccountRequest = () => {
       })
       .then((response) => {
         dispatch(setAccountRequestData(response.data));
+        if (response.data.length === 0) {
+          navigate("/account-request");
+        }
       })
       .catch((error) => {
         console.error("Error:", error);

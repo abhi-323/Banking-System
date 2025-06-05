@@ -1,17 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const branches = [
-  { name: "Mumbai - Andheri", ifsc: "HDFC0001234" },
-  { name: "Delhi - Connaught Place", ifsc: "ICIC0004567" },
-  { name: "Bangalore - MG Road", ifsc: "SBIN0007890" },
-  { name: "Hyderabad - Banjara Hills", ifsc: "AXIS0002345" },
-];
-
 const AccountRequest = () => {
   const navigate = useNavigate();
+  const [branches, setBranches] = useState([]);
   const {
     register,
     handleSubmit,
@@ -20,14 +14,35 @@ const AccountRequest = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const selectedBranch = watch("branch");
+  const selectedBranchId = watch("branch");
+
+  useEffect(() => {
+    const fetchBranches = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          "http://localhost:8080/api/branch/all-branch",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setBranches(response.data);
+      } catch (error) {
+        console.error("Failed to fetch branches:", error);
+      }
+    };
+
+    fetchBranches();
+  }, []);
 
   const onSubmit = async (data) => {
-    const branchData = branches.find((b) => b.name === data.branch);
+    const branchData = branches.find((b) => b.id === data.branch);
     const payload = {
       requestedType: data.requestedType,
-      branch: data.branch,
-      ifscCode: branchData ? branchData.ifsc : data.ifscCode,
+      branch: branchData.branchName,
+      ifscCode: branchData.ifscCode,
       pan: data.pan,
       status: "PENDING",
     };
@@ -60,8 +75,7 @@ const AccountRequest = () => {
         Apply for a New Bank Account
       </h2>
       <p className="text-gray-600 mb-6">
-        Fill in the details below to request a new account with your preferred
-        branch.
+        Fill in the details below to request a new account with your preferred branch.
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -80,9 +94,7 @@ const AccountRequest = () => {
             <option value="FIXED_DEPOSIT">Fixed Deposit</option>
           </select>
           {errors.requestedType && (
-            <p className="text-red-600 text-sm">
-              {errors.requestedType.message}
-            </p>
+            <p className="text-red-600 text-sm">{errors.requestedType.message}</p>
           )}
         </div>
 
@@ -94,9 +106,9 @@ const AccountRequest = () => {
             className="w-full border px-3 py-2"
           >
             <option value="">-- Choose Branch --</option>
-            {branches.map((b, idx) => (
-              <option key={idx} value={b.name}>
-                {b.name}
+            {branches.map((b) => (
+              <option key={b.id} value={b.id}>
+                {b.branchName} - {b.city}
               </option>
             ))}
           </select>
@@ -106,12 +118,12 @@ const AccountRequest = () => {
         </div>
 
         {/* IFSC Code (auto-filled) */}
-        {selectedBranch && (
+        {selectedBranchId && (
           <div>
             <label className="block mb-1 font-medium">IFSC Code</label>
             <input
               value={
-                branches.find((b) => b.name === selectedBranch)?.ifsc || ""
+                branches.find((b) => b.id === selectedBranchId)?.ifscCode || ""
               }
               readOnly
               className="w-full border px-3 py-2 bg-gray-100 text-gray-700"
